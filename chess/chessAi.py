@@ -104,7 +104,7 @@ def findBestMove(gs, validMoves, returnQueue):
     random.shuffle(validMoves)
 
     if gs.playerWantsToPlayAsBlack:
-        # Swap the variables
+        
         whitePawnScores, blackPawnScores = blackPawnScores, whitePawnScores
 
     SET_WHITE_AS_BOT = 1 if gs.whiteToMove else -1
@@ -115,7 +115,7 @@ def findBestMove(gs, validMoves, returnQueue):
     returnQueue.put(nextMove)
 
 
-# with alpha beta pruning
+
 '''
 alpha is keeping track of maximum so far
 beta is keeping track of minimum so far
@@ -127,12 +127,12 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
     if depth == 0:
         return turnMultiplier * scoreBoard(gs)
 
-    # (will add later) move ordering - like evaluate all the move first that results in check or evaluate all the move first that results in capturing opponent's queen
+    
 
     maxScore = -CHECKMATE
     for move in validMoves:
         gs.makeMove(move)
-        nextMoves = gs.getValidMoves()  # opponent validmoves
+        nextMoves = gs.getValidMoves()  
         '''
         negative sign because what ever opponents best score is, is worst score for us
         negative turnMultiplier because it changes turns after moves made 
@@ -148,8 +148,8 @@ def findMoveNegaMaxAlphaBeta(gs, validMoves, depth, alpha, beta, turnMultiplier)
                 print(move, score)
         gs.undoMove()
         if maxScore > alpha:
-            alpha = maxScore  # alpha is the new max
-        if alpha >= beta:  # if we find new max is greater than minimum so far in a branch then we stop iterating in that branch as we found a worse move in that branch
+            alpha = maxScore  
+        if alpha >= beta:  
             break
     return maxScore
 
@@ -164,10 +164,10 @@ def scoreBoard(gs):
     if gs.checkmate:
         if gs.whiteToMove:
             gs.checkmate = False
-            return -CHECKMATE  # black wins
+            return -CHECKMATE  
         else:
             gs.checkmate = False
-            return CHECKMATE  # white wins
+            return CHECKMATE  
     elif gs.stalemate:
         return STALEMATE
 
@@ -177,9 +177,9 @@ def scoreBoard(gs):
             square = gs.board[row][col]
             if square != "--":
                 piecePositionScore = 0
-                # score positionally based on piece type
+                
                 if square[1] != "K":
-                    # return score of the piece at that position
+                    
                     if square[1] == "p":
                         piecePositionScore = piecePositionScores[square][row][col]
                     else:
@@ -204,19 +204,19 @@ def scoreBoard(gs):
 
 '''def findBestMove(gs, validMoves):
     turnMultiplier = 1 if gs.whiteToMove else -1
-    opponentMinMaxScore = CHECKMATE # for bot worst score
-    bestMoveForPlayer = None # for black
+    opponentMinMaxScore = CHECKMATE 
+    bestMoveForPlayer = None 
     random.shuffle(validMoves)
     for playerMove in validMoves:
-        gs.makeMove(playerMove) # bot (black) makes a move
-        opponentsMoves = gs.getValidMoves() # player (white) get all valid moves 
-        opponentMaxScore = -CHECKMATE # player(opponent/white) worst possibility
+        gs.makeMove(playerMove) 
+        opponentsMoves = gs.getValidMoves() 
+        opponentMaxScore = -CHECKMATE 
         for opponentsMove in opponentsMoves:
-            # the more positive the score the better the score for player(opponent)
-            # player (opponent/white) makes a move for bot (black)
-            gs.makeMove(opponentsMove) # player makes a move
+            
+            
+            gs.makeMove(opponentsMove) 
             if gs.checkmate:
-                score = -turnMultiplier * CHECKMATE # if player (white) makes a move and it results in checkmate than its the max score for player but worst for bot
+                score = -turnMultiplier * CHECKMATE 
             elif gs.stalemate:
                 score = STALEMATE
             else:
@@ -224,7 +224,7 @@ def scoreBoard(gs):
             if score > opponentMaxScore:
                 opponentMaxScore = score
             gs.undoMove()
-        if opponentMaxScore < opponentMinMaxScore: # if player (opponent/white) moves does not result in checkmate(worst score for bot)
+        if opponentMaxScore < opponentMinMaxScore: 
             ''''''
             opponentMaxScore = max score for the opponent if bot played playerMove
 
@@ -236,13 +236,13 @@ def scoreBoard(gs):
         gs.undoMove()
     return bestMoveForPlayer '''
 
-'''def findMoveMinMax(gs, validMoves, depth, whiteToMove): #depth represent how many moves ahead we want to look to find current best move
+'''def findMoveMinMax(gs, validMoves, depth, whiteToMove): 
     global nextMove
     if depth == 0:
         return scoreMaterial(gs.board)
     
     if whiteToMove:
-        maxScore = -CHECKMATE # worst score for white
+        maxScore = -CHECKMATE 
         for move in validMoves:
             gs.makeMove(move)
             nextMoves = gs.getValidMoves()
@@ -255,7 +255,7 @@ def scoreBoard(gs):
         return maxScore
 
     else:
-        minScore = CHECKMATE # worst score for black
+        minScore = CHECKMATE 
         for move in validMoves:
             gs.makeMove(move)
             nextMoves = gs.getValidMoves()
@@ -266,7 +266,7 @@ def scoreBoard(gs):
                     nextMove = move
             gs.undoMove()
         return minScore'''
-# without alpha beta pruning
+
 '''def findMoveNegaMax(gs, validMoves, depth, turnMultiplier):
     global nextMove
     if depth == 0:
@@ -275,7 +275,7 @@ def scoreBoard(gs):
     maxScore = -CHECKMATE
     for move in validMoves:
         gs.makeMove(move)
-        nextMoves = gs.getValidMoves() # opponent validmoves
+        nextMoves = gs.getValidMoves() 
         ''''''
         - sign because what ever opponents best score is, is worst score for us
         negative turnMultiplier because it changes turns after moves made 
@@ -288,7 +288,7 @@ def scoreBoard(gs):
         gs.undoMove()
     return maxScore'''
 
-# calculate score of the board based on position
+
 '''
 def scoreMaterial(board):
     score = 0
